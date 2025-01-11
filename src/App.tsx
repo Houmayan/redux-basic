@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/layout/Navbar";
+import { ThemeProvider } from "./providers/theme-provider";
 
 function App() {
   // const dispatch = useAppDispatch();
@@ -12,10 +13,12 @@ function App() {
   //   dispatch(decrement());
   // };
   return (
-    <div>
-      <Navbar></Navbar>
-      <Outlet></Outlet>
-    </div>
+    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <div>
+        <Navbar></Navbar>
+        <Outlet></Outlet>
+      </div>
+    </ThemeProvider>
   );
 }
 
