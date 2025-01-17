@@ -34,7 +34,8 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { addTask } from "@/redux/feature/task/taskSlice";
-import { useAppDispatch } from "@/redux/hook";
+import { selectUser } from "@/redux/feature/user/userSlice";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { ITask } from "@/types";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
@@ -43,6 +44,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 const AddTaskModal = () => {
   const form = useForm();
   const dispatch = useAppDispatch();
+  const users = useAppSelector(selectUser);
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
     dispatch(addTask(data as ITask));
@@ -50,7 +52,9 @@ const AddTaskModal = () => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">Edit Profile</Button>
+        <Button className="hover:bg-[#4099bf]" variant="outline">
+          Add Your Next Todo
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogDescription className="sr-only">Form</DialogDescription>
@@ -142,6 +146,35 @@ const AddTaskModal = () => {
                       <SelectItem value="high">High</SelectItem>
                       <SelectItem value="medium">Medium</SelectItem>
                       <SelectItem value="low">Low</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Select the priority of the task.
+                    {/* <Link to={"/examples/forms"}>email settings</Link>. */}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="user"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Assign To:</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select Priority" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {users.map((user) => (
+                        <SelectItem value={user.id}>{user.name}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormDescription>
